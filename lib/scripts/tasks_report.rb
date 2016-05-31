@@ -16,13 +16,12 @@ class AbstractTask < ActiveRecord::Base
   has_many      :work_logs, -> { order('started_at asc') }, dependent: :destroy, foreign_key: 'task_id'
 
   COMPANY_ID =1
-  LAST_WEEK = Date.today..Date.today - 1.week
+  LAST_WEEK = (Date.today - 1.week)..Date.today
   REPORT_STATUSES = {0 => :open, 1 => :closed, 2 => :high, 3 => :invalid, 4 => :duplicate}
   REPORT_PRIORITY = {0 => :critical, 1 => :urgent, 2 => :high, 3 => :normal, 4 => :low, 5 => :lowest}
-
-  scope :opened, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:open), COMPANY_ID) }
-  scope :closed, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:closed), COMPANY_ID) }
-  scope :other, -> { where(company_id: COMPANY_ID).where.not(created_at: LAST_WEEK).where.not(completed_at: LAST_WEEK) }
+  scope :opened, -> { where(status: REPORT_STATUSES.key(:open), company_id: COMPANY_ID, created_at: LAST_WEEK)}
+  scope :closed, -> { where(status: REPORT_STATUSES.key(:closed), company_id: COMPANY_ID, created_at: LAST_WEEK)}
+  scope :other, -> { where(company_id: COMPANY_ID, completed_at: nil).where.not(created_at: LAST_WEEK) }
 end
 
 class TaskRecord < AbstractTask
