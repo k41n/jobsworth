@@ -12,6 +12,7 @@
         </tr>
         <tr>
           <td><span style="color:#666666">Resolution </span><%= AbstractTask::REPORT_STATUSES[task.status].capitalize %></td>
+
           <td><span style="color:#666666">Opened </span><%= task.owners.first.try(:name) %> - <%= task.created_at.strftime("%d %b %Y") %></td>
         </tr>
         </tbody>
