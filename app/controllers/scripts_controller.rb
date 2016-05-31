@@ -9,12 +9,15 @@ class ScriptsController < ApplicationController
   def index
     Dir.chdir(Rails.root) do |root|
       bash = `which bash`.strip
-      ruby = "script/jruby_jar_exec"
+      if defined?($servlet_context)
+        ruby = "script/jruby_jar_exec"
+      else
+        ruby = "ruby"
+      end
       runner = "script/rails runner -e development"
       script = "#{Setting.custom_scripts_root}/#{ params[:script] }".inspect
 
-      # cmd = "#{bash} #{ruby} #{runner} #{script} > tasks.html; firefox tasks.html"
-      cmd = "ruby #{script} > tasks.html; firefox tasks.html"
+      cmd = "#{ruby} #{script}"
 
       Rails.logger.info cmd
       result = ""
@@ -26,7 +29,7 @@ class ScriptsController < ApplicationController
         end
       end
 
-      response.content_type = "text/plain"
+      response.content_type = "text/html"
       render :text => result
     end
   end

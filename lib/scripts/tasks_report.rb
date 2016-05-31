@@ -5,14 +5,8 @@ require 'action_view'
 require 'erb'
 require 'activerecord-jdbcmysql-adapter'
 
-ActiveRecord::Base.establish_connection(
-  adapter:  'jdbcmysql',
-  database: 'jobsworth_development',
-  username: 'root',
-  password: ENV['DB_CONNECTION_PASSWORD'],
-  encoding: 'utf8',
-  host: '127.0.0.1'
-)
+config = YAML.load(ERB.new(File.new('config/database.yml').read).result(binding))[ENV['RAILS_ENV']]
+ActiveRecord::Base.establish_connection(config)
 
 class AbstractTask < ActiveRecord::Base
   self.table_name = 'tasks'
@@ -25,8 +19,8 @@ class AbstractTask < ActiveRecord::Base
   REPORT_STATUSES = {0 => :open, 1 => :closed, 2 => :high, 3 => :invalid, 4 => :duplicate}
   REPORT_PRIORITY = {0 => :critical, 1 => :urgent, 2 => :high, 3 => :normal, 4 => :low, 5 => :lowest}
 
-  scope :opened, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:open), COMPANY_ID) }
-  scope :closed, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:closed), COMPANY_ID) }
+  scope :opened, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:open), COMPANY_ID).where(created_at: LAST_WEEK) }
+  scope :closed, -> { where('status = ? AND company_id = ?', REPORT_STATUSES.key(:closed), COMPANY_ID).where(completed_at: LAST_WEEK) }
   scope :other, -> { where(company_id: COMPANY_ID).where.not(created_at: LAST_WEEK).where.not(completed_at: LAST_WEEK) }
 end
 
