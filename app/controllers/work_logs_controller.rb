@@ -3,6 +3,7 @@
 class WorkLogsController < ApplicationController
 
   before_filter :load_log, :only => [ :edit, :update, :destroy ]
+  before_filter :load_task, only: [:create, :update]
   before_filter :load_task_and_build_log, :only => [ :new, :create ]
 
   include WorkLogsHelper
@@ -12,7 +13,6 @@ class WorkLogsController < ApplicationController
 
   def create
     @log.user = current_user
-    @log.project = @task.project
 
     if @log.save
       flash[:success] = t('flash.notice.model_created', model: WorkLog.model_name.human)
@@ -28,7 +28,6 @@ class WorkLogsController < ApplicationController
 
   def update
     @log.attributes = work_log_params
-    @log.project = @task.project
 
     if @log.save
       flash[:success] = t('flash.notice.model_saved', model: WorkLog.model_name.human)
@@ -68,6 +67,10 @@ class WorkLogsController < ApplicationController
     def load_log
       @log = WorkLog.all_accessed_by(current_user).find(params[:id])
       @task = @log.task
+    end
+
+    def load_task
+      @log.project = @task.project
     end
 
     # Loads the task new logs should be linked to
