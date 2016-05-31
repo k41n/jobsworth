@@ -1,0 +1,98 @@
+<div style="margin-left: 400px; margin-right: 400px">
+  <h2 style="color: #660000; text-decoration: underline;">Recently opened</h2>
+  <table>
+    <% AbstractTask.opened.each do |task| %>
+      <div><h3><%= task.name %></h3></div>
+      <div><h5><%= task.description %></h5></div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="20%"><span style="color:#666666">Tasks </span><a href="<%=ENV['SITE_DOMAIN']%><%=task.id%>">#<%=task.id%></a></td>
+          <td width="80%"><span style="color:#666666">Priority </span><%= AbstractTask::REPORT_PRIORITY[task.priority].capitalize %></td>
+        </tr>
+        <tr>
+          <td><span style="color:#666666">Resolution </span><%= AbstractTask::REPORT_STATUSES[task.status].capitalize %></td>
+          <td><span style="color:#666666">Opened </span><%= task.owners.first.name %> - <%= task.created_at.strftime("%d %b %Y") %></td>
+        </tr>
+        </tbody>
+      </table>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="80%"><span style="color:#666666">Last comment </span><%= task.work_logs.last.user.name %>
+            <%= task.work_logs.last.started_at.strftime("%d %b %Y") %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><%= task.work_logs.last.body %></td>
+        </tr>
+        </tbody>
+      </table>
+      <hr>
+    <% end %>
+  </table>
+  <h2 style="color: #660000; text-decoration: underline;">Recently closed</h2>
+  <table>
+    <% AbstractTask.closed.each do |task| %>
+      <div><h3><%= task.name %></h3></div>
+      <div><h5><%= task.description %></h5></div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="20%"><span style="color:#666666">Tasks </span><a href="<%=ENV['SITE_DOMAIN']%><%=task.id%>">#<%=task.id%></a></td>
+          <td width="80%"><span style="color:#666666">Priority </span><%= AbstractTask::REPORT_PRIORITY[task.priority].capitalize %></td>
+        </tr>
+        <tr>
+          <td><span style="color:#666666">Resolution </span><%= AbstractTask::REPORT_STATUSES[task.status].capitalize %></td>
+          <td><span style="color:#666666">Opened </span><%= task.owners.first.name %> - <%= task.created_at.strftime("%d %b %Y") %></td>
+        </tr>
+        </tbody>
+      </table>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="80%"><span style="color:#666666">Last comment </span><%= task.work_logs.last.user.name %>
+            <%= task.work_logs.last.started_at.strftime("%d %b %Y") %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><%= task.work_logs.last.body %></td>
+        </tr>
+        </tbody>
+      </table>
+      <hr>
+    <% end %>
+  </table>
+  <h2 style="color: #660000; text-decoration: underline;">Other open tasks</h2>
+  <table>
+    <% AbstractTask.other.each do |task| %>
+      <div><h3><%= task.name %></h3></div>
+      <div><h5><%= task.description %></h5></div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="20%"><span style="color:#666666">Tasks </span><a href="<%=ENV['SITE_DOMAIN']%><%=task.id%>">#<%=task.id%></a></td>
+          <td width="80%"><span style="color:#666666">Priority </span><%= AbstractTask::REPORT_PRIORITY[task.priority].capitalize %></td>
+        </tr>
+        <tr>
+          <td><span style="color:#666666">Resolution </span><%= AbstractTask::REPORT_STATUSES[task.status].capitalize %></td>
+          <td><span style="color:#666666">Opened </span><%= task.owners.first.name %> - <%= task.created_at.strftime("%d %b %Y") %></td>
+        </tr>
+        </tbody>
+      </table>
+      <table width="100%" border="0" cellpadding="0" cellspacing="5">
+        <tbody>
+        <tr>
+          <td width="80%"><span style="color:#666666">Last comment </span><%= task.work_logs.last.user.name %>
+            <%= task.work_logs.last.started_at.strftime("%d %b %Y") %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><%= task.work_logs.last.body %></td>
+        </tr>
+        </tbody>
+      </table>
+      <hr>
+    <% end %>
+  </table>
+</div>
