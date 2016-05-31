@@ -13,10 +13,10 @@ class ScriptsController < ApplicationController
       runner = "script/rails runner -e development"
       script = "#{Setting.custom_scripts_root}/#{ params[:script] }".inspect
 
-      cmd = "#{bash} #{ruby} #{runner} #{script}"
+      # cmd = "#{bash} #{ruby} #{runner} #{script} > tasks.html; firefox tasks.html"
+      cmd = "ruby #{script} > tasks.html; firefox tasks.html"
 
       Rails.logger.info cmd
-
       result = ""
       Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thread|
         result += stdout.read
