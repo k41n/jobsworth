@@ -27,7 +27,6 @@ gem 'human_attribute'
 gem 'activerecord-session_store'
 gem 'rails-observers'
 gem 'logstash-logger'
-
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
   gem 'warbler', '~> 2.0rc', :require => false
@@ -79,6 +78,7 @@ end
 group :test, :development do
   gem 'rails-perftest', platform: :mri
   gem 'pry'
+  gem 'dotenv-rails'
 end
 
 group :test, :cucumber do
