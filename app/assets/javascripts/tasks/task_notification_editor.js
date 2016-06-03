@@ -182,9 +182,11 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     if (div.hasClass("is_assigned")) {
       input.attr("disabled", true);
       div.removeClass("is_assigned");
+      div.addClass("is_added");
     } else {
       input.attr("disabled", false);
       div.addClass("is_assigned");
+      div.removeClass("is_added");
     }
   }
 

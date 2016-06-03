@@ -2,7 +2,7 @@
    user = notification
    classname = "watcher clearfix access_level_#{user.access_level_id}"
    is_assigned = @task.owners.include?(user)
-   classname += " is_assigned" if is_assigned
+   is_assigned ? classname += " is_assigned" : classname += ' is_added'
 -%>
 <div class="<%= classname %>" data-user-id="<%= user.id %>">
   <%= hidden_field_tag("users[]", user.id, :class => "watcher_id") %>
@@ -26,9 +26,7 @@
   <% active_class = user.active ? "":"inactive" %>
   <%= link_to user.to_html, edit_user_path(user), :class => "username pull-left #{active_class}", :target => "_blank" %>&nbsp;
   <% if @task.estimate_date.present? %>
-    <span class="label label-warning">
-      <%= human_future_date(@task.estimate_date, user.tz) %>
-    </span>
+    <%= human_future_date(@task.estimate_date, user.tz) %>
   <% end %>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>
